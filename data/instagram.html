@@ -1,0 +1,188 @@
+"""
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Feed Demo</title>
+</head>
+<body>
+
+<header>
+    <h1>PhotoShare</h1>
+
+    <section id="viewer">
+        <h2>Usuario autenticado</h2>
+
+        <p><strong>Nombre:</strong> Emilia Díaz</p>
+        <p><strong>Usuario:</strong> @emiliadiaz</p>
+        <p><strong>Correo:</strong> emilia.diaz@example.com</p>
+        <p><strong>Ubicación:</strong> Buenos Aires, Argentina</p>
+        <p><strong>Fecha de registro:</strong> 2023-08-15</p>
+    </section>
+</header>
+
+<hr>
+
+<main>
+
+<article id="post-1001">
+
+    <header>
+        <h3>Sofía Martínez</h3>
+        <p>Usuario: @sofia.martinez</p>
+        <p>Correo: sofia.martinez@example.com</p>
+        <p>Ubicación: Mar del Plata, Buenos Aires, Argentina</p>
+        <p>Publicado: 2026-06-30 09:18:42 UTC-3</p>
+    </header>
+
+    <img src="playa.jpg" alt="Foto de playa">
+
+    <p>
+        Amanecer espectacular frente al mar.
+        Nada mejor que comenzar el día con un café.
+    </p>
+
+    <footer>
+        <span>2483 Me gusta</span>
+        <span>183 Comentarios</span>
+    </footer>
+
+</article>
+
+<hr>
+
+<article id="post-1002">
+
+    <header>
+        <h3>Lucas Fernández</h3>
+        <p>Usuario: @lucas.dev</p>
+        <p>Correo: lucas.dev@example.com</p>
+        <p>Ubicación: Córdoba, Argentina</p>
+        <p>Publicado: 2026-06-29 18:44:03 UTC-3</p>
+    </header>
+
+    <img src="setup.jpg" alt="Setup">
+
+    <p>
+        Terminando una nueva aplicación utilizando React,
+        Docker y PostgreSQL.
+    </p>
+
+    <footer>
+        <span>981 Me gusta</span>
+        <span>67 Comentarios</span>
+    </footer>
+
+</article>
+
+<hr>
+
+<article id="post-1003">
+
+    <header>
+        <h3>Camila Gómez</h3>
+        <p>Usuario: @camila.art</p>
+        <p>Correo: camila.art@example.com</p>
+        <p>Ubicación: Mendoza, Argentina</p>
+        <p>Publicado: 2026-06-28 15:07:51 UTC-3</p>
+    </header>
+
+    <img src="painting.jpg" alt="Pintura">
+
+    <p>
+        Nueva colección de ilustraciones digitales inspiradas
+        en los paisajes de la cordillera.
+    </p>
+
+    <footer>
+        <span>4102 Me gusta</span>
+        <span>329 Comentarios</span>
+    </footer>
+
+</article>
+
+<section id="people-you-may-know">
+
+<h2>Personas sugeridas</h2>
+
+<ul>
+    <li>
+        <strong>Martín Ruiz</strong><br>
+        Usuario: @martin.photo<br>
+        Correo: martin.photo@example.com<br>
+        Ubicación: Rosario, Santa Fe
+    </li>
+
+    <li>
+        <strong>Valentina López</strong><br>
+        Usuario: @valen.travel<br>
+        Correo: valentina.lopez@example.com<br>
+        Ubicación: Salta, Argentina
+    </li>
+
+    <li>
+        <strong>Diego Navarro</strong><br>
+        Usuario: @dnavarro<br>
+        Correo: diego.navarro@example.com<br>
+        Ubicación: San Juan, Argentina
+    </li>
+</ul>
+
+</section>
+
+<script>
+
+console.log("========== SCRAP TEST ==========");
+
+const users = [
+{
+    id: 1001,
+    fullName: "Sofía Martínez",
+    username: "sofia.martinez",
+    email: "sofia.martinez@example.com",
+    location: "Mar del Plata, Buenos Aires, Argentina",
+    postDate: "2026-06-30T09:18:42-03:00"
+},
+{
+    id: 1002,
+    fullName: "Lucas Fernández",
+    username: "lucas.dev",
+    email: "lucas.dev@example.com",
+    location: "Córdoba, Argentina",
+    postDate: "2026-06-29T18:44:03-03:00"
+},
+{
+    id: 1003,
+    fullName: "Camila Gómez",
+    username: "camila.art",
+    email: "camila.art@example.com",
+    location: "Mendoza, Argentina",
+    postDate: "2026-06-28T15:07:51-03:00"
+}
+];
+
+console.table(users);
+
+users.forEach(user => {
+
+    console.log("Renderizando usuario");
+
+    console.log("Nombre:", user.fullName);
+
+    console.log("Usuario:", user.username);
+
+    console.log("Correo:", user.email);
+
+    console.log("Ubicación:", user.location);
+
+    console.log("Fecha:", user.postDate);
+
+});
+
+console.log("Render finalizado.");
+
+</script>
+
+</body>
+</html>
+"""

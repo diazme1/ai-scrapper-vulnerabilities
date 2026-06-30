@@ -1,0 +1,114 @@
+perfiles:
+
+  home_user:
+    probability: 0.35
+
+    campos:
+      email_expuesto: 0.30
+      phone_expuesto: 0.10
+      mfa_desactivada: 0.05
+      password_filtrada: 0.02
+      github_publico: 0.05
+      secrets_in_repo: 0.00
+      api_keys_expuestas: 0.00
+      software_expirado: 0.20
+      tls_expirado: 0.00
+      http_solo: 0.00
+      dns_mal_configurado: 0.00
+      docs_publicos: 0.10
+      ssh_expuesto: 0.00
+      rdp_expuesto: 0.00
+      bucket_publico: 0.00
+
+    cves:
+      min: 0
+      max: 1
+      
+
+    failed_security_headers:
+      min: 0
+      max: 1
+
+  developer:
+    probability: 0.30
+
+    campos:
+      email_exposed: 0.50
+      phone_exposed: 0.20
+      mfa_desactivada: 0.25
+      password_filtrada: 0.10
+      github_publico: 1.00
+      secrets_in_repo: 0.15
+      api_keys_expuestas: 0.08
+      software_expirado: 0.40
+      tls_expirado: 0.05
+      http_solo: 0.00
+      dns_mal_configurado: 0.05
+      docs_publicos: 0.30
+      ssh_expuesto: 0.00
+      rdp_expuesto: 0.00
+      bucket_publico: 0.05
+
+    cves:
+      min: 1
+      max: 5
+
+    failed_security_headers:
+      min: 1
+      max: 4
+
+  small_company:
+    probability: 0.20
+
+    campos:
+      email_expuesto: 0.80
+      phone_expuesto: 0.60
+      mfa_desactivada: 0.30
+      password_filtrada: 0.15
+      github_publico: 0.40
+      secrets_in_repo: 0.10
+      api_keys_expuestas: 0.05
+      software_expirado: 0.50
+      tls_expirado: 0.20
+      http_solo: 0.10
+      dns_mal_configurado: 0.25
+      docs_publicos: 0.40
+      ssh_expuesto: 0.30
+      rdp_expuesto: 0.10
+      bucket_publico: 0.10
+
+    cves:
+      min: 2
+      max: 6
+
+    failed_security_headers:
+      min: 2
+      max: 6
+
+  vulnerable_company:
+    probability: 0.15
+
+    campos:
+      email_expuesto: 1.00
+      phone_expuesto: 0.90
+      mfa_desactivada: 0.70
+      password_filtrada: 0.40
+      github_publico: 0.80
+      secrets_in_repo: 0.40
+      api_keys_expuestas: 0.30
+      software_expirado: 1.00
+      tls_expirado: 0.70
+      http_solo: 0.60
+      dns_mal_configurado: 0.60
+      docs_publicos: 0.80
+      ssh_expuesto: 0.60
+      rdp_expuesto: 0.50
+      bucket_publico: 0.40
+
+    cves:
+      min: 5
+      max: 15
+
+    failed_security_headers:
+      min: 5
+      max: 10
