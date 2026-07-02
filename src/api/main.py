@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from app.api.risk import router
+from src.api.routes import router
 
 app = FastAPI(
-    title="Attack Surface Risk Classifier",
+    title="AI Scrapper Vulnerabilities API",
     version="1.0.0"
 )
 

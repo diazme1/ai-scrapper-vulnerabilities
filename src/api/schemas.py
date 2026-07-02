@@ -25,3 +25,9 @@ class RiskResponse(BaseModel):
 
     risk_level: str
     risk_score: float
+
+class WebScanResponse(BaseModel):
+
+    estado: str
+    total_personas_encontradas: int
+    personas: list
