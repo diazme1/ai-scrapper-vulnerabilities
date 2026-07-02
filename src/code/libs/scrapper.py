@@ -1,8 +1,5 @@
-import re
-import spacy
+import re, spacy, requests, json
 from bs4 import BeautifulSoup
-import requests
-import json
 
 # Cargamos el modelo de lenguaje en español de spaCy
 # (Nota: Te sugiero fuertemente usar "es_core_news_lg" para evitar falsos positivos en nombres)
@@ -52,9 +49,11 @@ class Scrapper:
         palabras_basura = [
             "Usuario", "Correo", "Ubicación", "Teléfono", "Tel", "Celular", "Mail", "Publicado", 
             "Argentina", "Contacto", "Nombre", "Fecha", "registro", "Aviso", "Importante", 
-            "Seguridad", "Estimado", "React", "WhatsApp", "Rol", "Administrador", "Base de Datos", 
-            "Moderadora", "Contenido", "corporativo", "guardias"
+            "Seguridad", "Estimado", "React", "WhatsApp", "Contenido"
         ]     
+
+        roles_clave = ["Administrador", "Base de Datos", "Moderadora", "CEO", "Soporte", "Director"]
+
         # 2. Iteramos sobre los contenedores lógicos más comunes en maquetación
         for bloque in soup.find_all(['article', 'section', 'div', 'li']):
             
@@ -67,6 +66,11 @@ class Scrapper:
             # Analizamos todo el texto del bloque para extraer datos
             emails, telefonos, usuarios, fechas = self._extraer_datos_por_patron(texto_bloque)
             nombres_crudos, lugares = self._extraer_entidades_nlp(texto_bloque)
+
+            roles_encontrados = []
+            for rol in roles_clave:
+                if re.search(rf'\b{rol}\b', texto_bloque, flags=re.IGNORECASE):
+                    roles_encontrados.append(rol)
             
             # Limpieza de nombres
             nombres_limpios = []
@@ -121,7 +125,8 @@ class Scrapper:
                     "emails": nuevos_emails,
                     "telefonos": telefonos,
                     "ubicaciones": lugares_limpios,
-                    "fechas": fechas   
+                    "fechas": fechas,
+                    "roles": list(set(roles_encontrados))  
                 }
                 personas_encontradas.append(perfil)
                 

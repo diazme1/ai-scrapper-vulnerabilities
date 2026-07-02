@@ -8,6 +8,9 @@ El flujo de trabajo se divide en dos etapas críticas:
 1. 🔍 Motor de Análisis: Procesa la entrada (URL o HTML), utiliza patrones Regex avanzados y estructura la información semántica del DOM en objetos JSON.
 2. ⚖️ RiskClassifier: Aplica una matriz de scoring sobre los datos extraídos para categorizar la exposición en niveles: Bajo, Medio, Alto o Crítico.
 
+## Diagrama
+![alt text](docs/diagrama_ai_scrapper_vulnerabilities.png)
+
 ---
 
 ## 🛠️ Setup e Instalación
