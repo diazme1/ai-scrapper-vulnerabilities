@@ -1,14 +1,26 @@
-from fastapi import APIRouter
-from src.code.libs import RiskClassifier
-from src.api.schemas import Profile, RiskResponse
+from fastapi import APIRouter, UploadFile, File, Form
+from src.code.libs import Scrapper
+from src.api.schemas import Profile, RiskResponse, WebScanResponse
 
 router = APIRouter()
 
-risk_classifier = RiskClassifier()
+scrapper = Scrapper()
 
 
-@router.post("/procesar-perfil", response_model=RiskResponse)
-def procesar_perfil(profile: Profile):
+@router.post("/escanear-web", response_model=WebScanResponse)
+def escanear_web(url: str):
 
-    return risk_classifier.process_profile(profile)
+    response = scrapper.escanear_web(url, True)
+
+    return response
+
+@router.post("/escanear-html", response_model=WebScanResponse)
+async def escanear_html(html_file: UploadFile = File(...)):
+
+    content = await html_file.read()
+    html_content = content.decode("utf-8")
+
+    response = scrapper.escanear_web(html_content, False)
+
+    return response
 
