@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Directorio Corporativo - ACME Corp</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .profile-card { border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 20px; background-color: #f9f9f9; }
+        .role { font-weight: bold; color: #d32f2f; }
+        .low-risk-role { font-weight: bold; color: #388e3c; }
+        .meta-data { color: #666; font-size: 0.85em; font-style: italic; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Directorio Interno de Empleados</h1>
+    <p>Listado público de contactos para coordinación de equipos.</p>
+
+    <div class="profile-card" id="prof-01">
+        <h2>Sofía Martínez</h2>
+        <p class="role">Cargo: Administrador de Sistemas e Infraestructura</p>
+        <ul>
+            <li>Email Corporativo: smartinez@acme.com.ar</li>
+            <li>Email Personal (Recuperación): sofia.martinez99@gmail.com</li>
+            <li>Teléfono Móvil: +54 9 11 4321 8765</li>
+            <li>Teléfono Guardia 24/7: 11-9999-0000</li>
+        </ul>
+        <p><strong>Ubicación física:</strong> Sede Central - Buenos Aires, Argentina (Acceso a Data Center)</p>
+        <p class="meta-data">Última actualización de perfil: 2026-07-02 14:30:00 UTC-3</p>
+    </div>
+
+    <div class="profile-card" id="prof-02">
+        <h2>Juan Pérez</h2>
+        <p class="low-risk-role">Cargo: Diseñador Gráfico Jr.</p>
+        <ul>
+            <li>Email: jperez@acme.com.ar</li>
+        </ul>
+        <p class="meta-data">Usuario estándar. Sin privilegios de administración de red.</p>
+    </div>
+
+    <div class="profile-card" id="prof-03">
+        <h2>Martín Gómez</h2>
+        <p class="role">Cargo: Consultor Externo Ejecutivo</p>
+        <ul>
+            <li>Email: mgomez.consultor@acme.com.ar</li>
+            <li>Teléfono: +54 351 123 4567</li>
+        </ul>
+        <p><strong>Ubicación:</strong> Córdoba Capital, Argentina</p>
+        <p class="meta-data">Última conexión registrada: 2021-05-15</p>
+    </div>
+
+    <div class="profile-card" id="prof-04">
+        <h2>Laura Fernández</h2>
+        <p class="low-risk-role">Cargo: Desarrolladora Frontend</p>
+        <ul>
+            <li>Email: lfernandez@acme.com.ar</li>
+            <li>Teléfono: 11-5555-4444</li>
+        </ul>
+        <p><strong>Ubicación:</strong> Mar del Plata, Oficina 2</p>
+        <p class="meta-data">Fecha de alta en el sistema: 2026-06-30 09:00:00 UTC-3</p>
+    </div>
+
+
+    <script id="__NEXT_DATA__" type="application/json">
+        {
+            "props": {
+                "pageProps": {
+                    "env_mode": "production",
+                    "backend_url": "https://api.internal.acme.com.ar/v1/graphql",
+                    "build_id": "production_build_2026_07_01",
+                    "debug_logs": "process.env.NEXT_PUBLIC_DEBUG_ENABLED"
+                }
+            },
+            "query": "query { getSystemStatus { database_url connected } }"
+        </script>
+
+    <script>
+        // TODO: Eliminar antes de subir a producción
+        console.log("Initializing Firebase Auth service...");
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyA1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q",
+            authDomain: "acme-corp-prod.firebaseapp.com",
+            projectId: "acme-corp-prod",
+            storageBucket: "acme-corp-prod.appspot.com"
+        };
+
+        window.__INITIAL_STATE__ = {
+            user_session: {
+                logged_in: true,
+                sys_user: "@root_admin",
+                contact_backup: "infra-alerts@acme.com.ar"
+            }
+        };
+    </script>
+
+</body>
+</html>

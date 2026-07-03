@@ -1,0 +1,10 @@
+# Ignorar variables de entorno
+.env
+
+# Ignorar carpetas de editores de código
+.vscode/
+.idea/
+
+# Ignorar entornos virtuales
+.venv/
+venv/
