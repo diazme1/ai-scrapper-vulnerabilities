@@ -31,8 +31,13 @@ class Scrapper:
 
 
         soup = BeautifulSoup(html_crudo, 'html.parser')
+
+        scripts_tags = soup.find_all('script')
+        texto_de_scripts = " ".join([s.get_text() for s in scripts_tags if s.get_text()])
+
+        fuga_por_scripts = self._extraer_info_scripts(texto_de_scripts)
         
-        # 1. Limpiamos scripts y código oculto que no queremos procesar
+        # Limpieza de scripts y estilos para evitar ruido
         for script in soup(["script", "style", "noscript"]):
             script.extract()
             
@@ -47,12 +52,15 @@ class Scrapper:
         palabras_basura = [
             "Usuario", "Correo", "Ubicación", "Teléfono", "Tel", "Celular", "Mail", "Publicado", 
             "Argentina", "Contacto", "Nombre", "Fecha", "registro", "Aviso", "Importante", 
-            "Seguridad", "Estimado", "React", "WhatsApp", "Contenido"
+            "Seguridad", "Estimado", "React", "WhatsApp", "Contenido", "Cargo", "Email"
         ]     
 
-        roles_clave = ["Administrador", "Base de Datos", "Moderadora", "CEO", "Soporte", "Director"]
+        roles_clave = [
+            "Administrador", "Base de Datos", "Moderadora", "CEO", "Soporte", "Director", 
+            "Desarrollador", "Diseñador", "Tester", "Líder", "Coordinador"
+        ]
 
-        # 2. Iteramos sobre los contenedores lógicos más comunes en maquetación
+        # Iteración sobre los contenedores lógicos más comunes en maquetación
         for bloque in soup.find_all(['article', 'section', 'div', 'li']):
             
             texto_bloque = bloque.get_text(separator=' ', strip=True)
@@ -94,11 +102,11 @@ class Scrapper:
             for lugar in lugares:
                 lugar_temp = lugar
                 
-                # PASO 1: Quitamos las palabras basura específicas (si están dentro de la frase)
+                # Eliminación de palabras basura
                 for basura in palabras_basura:
                     lugar_temp = re.sub(rf'\b{basura}\b', '', lugar_temp, flags=re.IGNORECASE)
                 
-                # PASO 2: Limpiamos signos, comas y espacios extra
+                # Limpieza de caracteres especiales
                 lugar_clean = re.sub(r'^[,\s:\-]+|[,\s:\-]+$', '', lugar_temp).strip()
                 
                 if lugar_clean.lower() not in lista_negra_lugares and len(lugar_clean) > 3:
@@ -135,7 +143,8 @@ class Scrapper:
         return {
             "estado": "completado",
             "total_personas_encontradas": len(personas_encontradas),
-            "personas": personas_encontradas
+            "personas": personas_encontradas,
+            "tecnologias_detectadas": fuga_por_scripts
             }
 
 
@@ -185,5 +194,72 @@ class Scrapper:
                 
         return list(set(nombres)), list(set(direcciones_lugares))
 
-    
+    def _extraer_info_scripts(self, texto:str):
+
+        info_tecnologias = {
+            "frameworks": [],
+            "arquitectura_bd_api": [],
+            "posibles_fugas_config": {}
+        }
+
+        if texto:
+
+            # Frameworks o librerías
+            framework_patterns = {
+                "React.js": r"reactRoot|__react|react-dom",
+                "Next.js": r"__NEXT_DATA__|next/script",
+                "Vue.js": r"__VUE__|vue-router",
+                "Angular": r"ng-version|ng-bootstrap",
+                "jQuery": r"jQuery|libs/jquery"
+            }
+            for framework, pattern in framework_patterns.items():
+                if re.search(pattern, texto):
+                    info_tecnologias["frameworks"].append(framework)
+
+            # Bases de datos, ORMs o APIs
+            db_api_patterns = {
+                "GraphQL / Apollo": r"query\s*\{|mutation\s*\{|__typename",
+                "Firebase / Firestore": r"firebaseConfig|firestore|initializeWithApp",
+                "MongoDB / Mongoose": r"mongodb:\/\/|ObjectId\(",
+                "PostgreSQL / MySQL / SQL": r"SELECT\s+.*\s+FROM|postgres:\/\/|mysql:\/\/",
+                "Supabase": r"supabaseUrl|supabaseKey"
+            }
+            for tecnologia, pattern in db_api_patterns.items():
+                if re.search(pattern, texto, flags=re.IGNORECASE):
+                    info_tecnologias["arquitectura_bd_api"].append(tecnologia)
+
+
+            # API_KEYS, TOKENS o variables de entorno
+            config_patterns = {
+                "Variables de Entorno expuestas": r"process\.env\.[A-Z0-9_]+",
+                "API Key / Tokens en código": r"(?:api_key|apikey|secret_key|token|auth_domain)\s*[:=]\s*['\"][A-Za-z0-9_\-]{16,}['\"]",
+                "Endpoint de Base de Datos expuesto": r"(?:db_url|database_url|connection_string)\s*[:=]"
+            }
+            riesgos = []
+            for riesgo, pattern in config_patterns.items():
+                if re.search(pattern, texto, flags=re.IGNORECASE):
+                    riesgos.append(riesgo)
+            
+            info_tecnologias["posibles_fugas_config"]['riesgos_identificados'] = riesgos
+
+            patron_env = r"(process\.env\.[A-Z0-9_]+)"
+            envs = re.findall(patron_env, texto)
+            if envs:
+                info_tecnologias["posibles_fugas_config"]["variables_entorno_expuestas"] = list(set(envs))
+
+            patron_keys = r"(?:api_key|apikey|secret_key|token|auth_domain)\s*[:=]\s*['\"]([A-Za-z0-9_\-]{16,})['\"]"
+            keys = re.findall(patron_keys, texto, flags=re.IGNORECASE)
+            if keys:
+                info_tecnologias["posibles_fugas_config"]["tokens_api_keys_encontrados"] = list(set(keys))
+
+            # Captura strings de asignación a bases de datos o strings de conexión crudos
+            patron_db_urls = r"(?:db_url|database_url|connection_string)\s*[:=]\s*['\"]([^'\"]+)['\"]"
+            db_urls = re.findall(patron_db_urls, texto, flags=re.IGNORECASE)
+            if db_urls:
+                info_tecnologias["posibles_fugas_config"]["endpoints_bd_encontrados"] = list(set(db_urls))
+
+            return info_tecnologias
+
+
+
 
