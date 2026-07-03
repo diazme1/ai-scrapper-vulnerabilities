@@ -1,10 +1,11 @@
 from fastapi import APIRouter, UploadFile, File, Form
-from src.code.libs import Scrapper
-from src.api.schemas import Profile, RiskResponse, WebScanResponse
+from src.code.libs import Scrapper, RiskScorer
+from src.api.schemas import Profile, RiskResponse, WebScanResponse, ContextProfile
 
 router = APIRouter()
 
 scrapper = Scrapper()
+risk_scorer = RiskScorer(config_path="src/config/matriz_scores.yaml")
 
 
 @router.post("/escanear-web", response_model=WebScanResponse)
@@ -23,4 +24,13 @@ async def escanear_html(html_file: UploadFile = File(...)):
     response = scrapper.escanear_web(html_content, False)
 
     return response
+
+@router.post("/evaluar-perfil", response_model=RiskResponse)
+def evaluar_perfil(profile: Profile):
+
+    perfil_scraper = profile.dict()
+
+    resultado = risk_scorer.evaluar_perfil(perfil_scraper)
+
+    return resultado
 

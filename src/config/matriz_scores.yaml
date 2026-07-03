@@ -1,23 +1,24 @@
-MATRIZ_SCORING:
+scoring:
     email_expuesto: 8
     telefono_expuesto: 10
+    datos_personales_expuestos: 15
+    riesgo_doxing_agrupado: 25
+    datos_recientes: 15
+    datos_viejos: -15
+    rol_expuesto: 50
     mfa_desactivada: 20
-    contrasena_filtrada: 30
     contrasena_reutilizada: 25
     contrasenas_guardadas_en_navegador: 15
-    contrasenas_guardadas_en_doc_digital: 25
     redes_sociales_publicas: 15
     conexion_frecuente_a_redes_publicas: 10
-    datos_personales_expuestos: 15
     antivirus_desactivado: 15
     compras_online_frecuentes: 10
     backup_inexistente: 18
-    riesgo_doxxing_agrupado: 25
 
 
 levels:
-  riesgo_minimo: 25
-  riesgo_bajo: 55
-  riesgo_medio: 95
-  riesgo_alto: 130
-  riesgo_critico: 200
+  25: Mínimo
+  55: Bajo
+  95: Medio
+  130: Alto
+  200: Crítico

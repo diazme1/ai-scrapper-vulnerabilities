@@ -1,8 +1,6 @@
-import re, spacy, requests, json
+import re, spacy, requests
 from bs4 import BeautifulSoup
 
-# Cargamos el modelo de lenguaje en español de spaCy
-# (Nota: Te sugiero fuertemente usar "es_core_news_lg" para evitar falsos positivos en nombres)
 
 class Scrapper:
 
@@ -57,7 +55,6 @@ class Scrapper:
         # 2. Iteramos sobre los contenedores lógicos más comunes en maquetación
         for bloque in soup.find_all(['article', 'section', 'div', 'li']):
             
-            # TRUCO CLAVE: Juntamos todo el texto del contenedor con un espacio.
             texto_bloque = bloque.get_text(separator=' ', strip=True)
             
             if len(texto_bloque) < 10:

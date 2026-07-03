@@ -1,174 +1,148 @@
-import json
+import json, yaml
 from datetime import datetime
 
-# Tu matriz de riesgo definida como un diccionario
-MATRIZ_SCORING = {
-    "email_expuesto": 8,
-    "telefono_expuesto": 10,
-    "mfa_desactivada": 20,
-    "contrasena_filtrada": 30,
-    "contrasena_reutilizada": 25,
-    "contrasenas_guardadas_en_navegador": 15,
-    "contrasenas_guardadas_en_doc_digital": 25,
-    "redes_sociales_publicas": 15,
-    "conexion_frecuente_a_redes_publicas": 10,
-    "datos_personales_expuestos": 15,
-    "antivirus_desactivado": 15,
-    "compras_online_frecuentes": 10,
-    "backup_inexistente": 18,
-    "riesgo_doxxing_agrupado": 25,
-    "datos_recientes": 15,
-    "datos_viejos": -15,
-    "rol_expuesto": 50
-}
+class RiskScorer:
 
+    def __init__(self, config_path: str):
 
-def calcular_nivel_riesgo(score_total):
-    """Clasifica el riesgo total en niveles para facilitar la lectura."""
-    if score_total < 30:
-        return "Bajo"
-    elif score_total < 70:
-        return "Medio"
-    elif score_total < 120:
-        return "Alto"
-    else:
-        return "Crítico"
-
-def evaluar_perfil(perfil_scraper, info_interna_usuario):
-    """
-    Cruza los datos extraídos de un perfil específico con la información interna.
-    Incluye lógica para detectar riesgo de Doxxing por agrupación de datos.
-    """
-    score_final = 0
-    factores_de_riesgo = []
-    
-    # Contador de datos de un mismo perfil expuesto
-    cant_datos_expuestos = 0
-
-    # 1. Mapear los resultados del Scraper a la Matriz
-    if len(perfil_scraper.get("emails", [])) > 0:
-        score_final += MATRIZ_SCORING["email_expuesto"]
-        factores_de_riesgo.append("email_expuesto")
-        cant_datos_expuestos += 1
-
-    if len(perfil_scraper.get("telefonos", [])) > 0:
-        score_final += MATRIZ_SCORING["telefono_expuesto"]
-        factores_de_riesgo.append("telefono_expuesto")
-        cant_datos_expuestos += 1
-
-    # Verificamos exposición de nombre o ubicación
-    tiene_nombre = perfil_scraper.get("nombre") and perfil_scraper.get("nombre") != "Desconocido"
-    tiene_ubicacion = len(perfil_scraper.get("ubicaciones", [])) > 0
-    
-    if tiene_nombre or tiene_ubicacion:
-        score_final += MATRIZ_SCORING["datos_personales_expuestos"]
-        factores_de_riesgo.append("datos_personales_expuestos")
-        cant_datos_expuestos += 1
-
-
-    if cant_datos_expuestos >= 3:
-        score_final += MATRIZ_SCORING["riesgo_doxxing_agrupado"]
-        factores_de_riesgo.append("riesgo_doxxing_agrupado")
-
-    fechas = perfil_scraper.get("fechas", [])
-    if fechas:
-        fechas_datetime = []
-        for f in fechas:
-            try:
-                # Tomamos solo los primeros 10 caracteres (YYYY-MM-DD)
-                fecha_limpia = f[:10]
-                fechas_datetime.append(datetime.strptime(fecha_limpia, "%Y-%m-%d"))
-            except ValueError:
-                continue # Ignoramos fechas mal formateadas
-        
-        if fechas_datetime:
-            # Buscamos la fecha más reciente encontrada en este perfil
-            fecha_mas_reciente = max(fechas_datetime)
-            dias_antiguedad = (datetime.now() - fecha_mas_reciente).days
+        try:
+            with open(config_path, 'r', encoding='utf-8') as file:
+                config = yaml.safe_load(file)
             
-            # Aplicamos reglas temporales
-            if dias_antiguedad <= 30:
-                score_final += MATRIZ_SCORING["datos_recientes"]
-                factores_de_riesgo.append("datos_recientes")
-            elif dias_antiguedad >= 1095: # 3 años
-                score_final += MATRIZ_SCORING["datos_viejos"]
-                factores_de_riesgo.append("datos_viejos")
+            self.matriz_scoring = config.get("scoring", {})
+            self.levels_riesgo = dict(sorted(config.get("levels", {}).items()))
 
-    roles_detectados = perfil_scraper.get("roles", [])
-    if len(roles_detectados) > 0:
-        score_final += MATRIZ_SCORING["rol_expuesto"]
-        factores_de_riesgo.append("rol_expuesto")
+        except Exception as e:
+            raise RuntimeError(f"Error al cargar la configuración: {str(e)}")
 
-    # 2. Sumar la información de infraestructura/hábitos (que viene de otro sistema)
-    for clave, estado in info_interna_usuario.items():
-        if estado is True and clave in MATRIZ_SCORING:
-            score_final += MATRIZ_SCORING[clave]
-            factores_de_riesgo.append(clave)
+    def evaluar_perfil(self, perfil_scraper: dict, info_interna_usuario: dict = None):
+        """
+        Cruza los datos extraídos de un perfil específico con la información interna.
+        Incluye lógica para detectar riesgo de Doxxing por agrupación de datos.
+        """
+        score_final = 0
+        cant_datos_expuestos = 0
+        factores_de_riesgo = []
 
-    return {
-        "nombre_analizado": perfil_scraper.get("nombre", "Desconocido"),
-        "roles_identificados": roles_detectados, 
-        "score_total": max(0, score_final),
-        "nivel_riesgo": calcular_nivel_riesgo(score_final),
-        "factores_de_riesgo_detectados": factores_de_riesgo
-    }
+        # Score de datos de contacto expuestos (emails y teléfonos)
+        score_final += self._evaluar_datos_de_contacto_expuestos(
+            cant_datos_expuestos=cant_datos_expuestos,
+            factores_de_riesgo=factores_de_riesgo,
+            emails=perfil_scraper.get('emails'), 
+            telefonos=perfil_scraper.get('telefonos')
+            )
 
-# === Simulación de Integración ===
-# if __name__ == "__main__":
-#     contexto_usuario = {
-#         "mfa_desactivada": False,
-#         "backup_inexistente": False
-#     }
+        # Verificamos exposición de nombre o ubicación
+        tiene_nombre = perfil_scraper.get("nombre") and perfil_scraper.get("nombre") != "Desconocido"
+        tiene_ubicacion = len(perfil_scraper.get("ubicaciones", [])) > 0
+        
+        if tiene_nombre or tiene_ubicacion:
+            score_final += self.matriz_scoring["datos_personales_expuestos"]
+            factores_de_riesgo.append("datos_personales_expuestos")
+            cant_datos_expuestos += 1
 
-#     # Perfil 1: Datos filtrados hoy/recientemente
-#     perfil_caliente = {
-#         "nombre": "Sofía Martínez",
-#         "emails": ["sofia@example.com"],
-#         "telefonos": ["1123602360"],
-#         "ubicaciones": ["Mar del Plata"],
-#         "fechas": ["2026-06-30 09:18:42 UTC-3"] # Reciente
-#     }
+        score_final += self._validar_doxing_agrupado(
+            cant_datos_expuestos=cant_datos_expuestos, 
+            factores_de_riesgo=factores_de_riesgo
+            )
+
+        score_final += self._calculo_time_decay(
+            factores_de_riesgo=factores_de_riesgo, 
+            fechas=perfil_scraper.get('fechas')
+            )
+        
+        roles_detectados = perfil_scraper.get('roles', [])
+        score_final += self._evaluar_roles_expuestos(
+            factores_de_riesgo=factores_de_riesgo,
+            roles=roles_detectados
+            )
+
+        # Evaluación de la información que se proporciona por contexto
+        if info_interna_usuario:
+            for clave, estado in info_interna_usuario.items():
+                if estado is True and clave in self.matriz_scoring:
+                    score_final += self.matriz_scoring[clave]
+                    factores_de_riesgo.append(clave)
+
+        return {
+            "nombre_analizado": perfil_scraper.get("nombre", "Desconocido"),
+            "roles_identificados": roles_detectados, 
+            "score_total": max(0, score_final),
+            "nivel_riesgo": self._calcular_nivel_riesgo(score_final),
+            "factores_de_riesgo_detectados": factores_de_riesgo
+        }
+
+    def _calcular_nivel_riesgo(self, score_total:int):
     
-#     # Perfil 2: Datos filtrados hace mucho tiempo
-#     perfil_frio = {
-#         "nombre": "Emilia Díaz",
-#         "emails": ["emilia@example.com"],
-#         "telefonos": ["1143218765"],
-#         "ubicaciones": ["Buenos Aires"],
-#         "fechas": ["2019-08-15"] # Obsoleto
-#     }
+        for limite, nivel in self.levels_riesgo.items():
+            if score_total <= limite:
+                return nivel
+        
+        return list(self.levels_riesgo.values())[-1]
 
-#     print("--- Perfil Reciente ---")
-#     print(json.dumps(evaluar_perfil(perfil_caliente, contexto_usuario), indent=4, ensure_ascii=False))
+    def _evaluar_datos_de_contacto_expuestos(self, cant_datos_expuestos, factores_de_riesgo, emails, telefonos):
+        
+        score = 0
+
+        if emails:
+            score += self.matriz_scoring["email_expuesto"]
+            factores_de_riesgo.append("email_expuesto")
+            cant_datos_expuestos += 1
+
+        if telefonos:
+            score += self.matriz_scoring["telefono_expuesto"]
+            factores_de_riesgo.append("telefono_expuesto")
+            cant_datos_expuestos += 1
+
+        return score
+
+    def _calculo_time_decay(self, factores_de_riesgo, fechas):
+
+        score = 0
+
+        if fechas:
+            fechas_datetime = []
+            for f in fechas:
+                try:
+                    # Tomamos solo los primeros 10 caracteres (YYYY-MM-DD)
+                    fecha_limpia = f[:10]
+                    fechas_datetime.append(datetime.strptime(fecha_limpia, "%Y-%m-%d"))
+                except ValueError:
+                    continue # Ignoramos fechas mal formateadas
+            
+            if fechas_datetime:
+                # Buscamos la fecha más reciente encontrada en este perfil
+                fecha_mas_reciente = max(fechas_datetime)
+                dias_antiguedad = (datetime.now() - fecha_mas_reciente).days
+                
+                # Aplicamos reglas temporales
+                if dias_antiguedad <= 30:
+                    score += self.matriz_scoring["datos_recientes"]
+                    factores_de_riesgo.append("datos_recientes")
+                elif dias_antiguedad >= 1095: # 3 años
+                    score += self.matriz_scoring["datos_viejos"]
+                    factores_de_riesgo.append("datos_viejos")
+        
+        return score
+
+    def _evaluar_roles_expuestos(self, factores_de_riesgo, roles):
+        
+        score = 0
+
+        if roles:
+            score += self.matriz_scoring["rol_expuesto"]
+            factores_de_riesgo.append("rol_expuesto")
+        
+        return score
+
+    def _validar_doxing_agrupado(self, cant_datos_expuestos, factores_de_riesgo):
+        
+        score = 0
     
-#     print("\n--- Perfil Obsoleto ---")
-#     print(json.dumps(evaluar_perfil(perfil_frio, contexto_usuario), indent=4, ensure_ascii=False))
+        if cant_datos_expuestos >= 3:
+            score_final += self.matriz_scoring["riesgo_doxing_agrupado"]
+            factores_de_riesgo.append("riesgo_doxing_agrupado")
 
-if __name__ == "__main__":
-    contexto_usuario = {"mfa_desactivada": False}
+        return score
 
-    # Perfil 1: Usuario normal (Sofía)
-    perfil_usuario = {
-        "nombre": "Sofía Martínez",
-        "emails": ["sofia@example.com"],
-        "telefonos": [],
-        "ubicaciones": [],
-        "fechas": ["2026-07-02"],
-        "roles": [] # Sin rol detectado
-    }
     
-    # Perfil 2: Administrador expuesto (Roberto del HTML que pasaste antes)
-    perfil_admin = {
-        "nombre": "Roberto Sánchez",
-        "emails": ["rsanchez@photoshare.com.ar"],
-        "telefonos": ["11-9999-0000"],
-        "ubicaciones": [],
-        "fechas": ["2026-07-02"],
-        "roles": ["Administrador", "Base de Datos"] # El scrapper capturó esto
-    }
-
-    print("--- Usuario Regular ---")
-    print(json.dumps(evaluar_perfil(perfil_usuario, contexto_usuario), indent=4, ensure_ascii=False))
-    
-    print("\n--- Administrador Expuesto (Riesgo Crítico) ---")
-    print(json.dumps(evaluar_perfil(perfil_admin, contexto_usuario), indent=4, ensure_ascii=False))

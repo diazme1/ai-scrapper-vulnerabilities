@@ -1,2 +1,2 @@
 from .scrapper import Scrapper
-from .risk_processor import RiskClassifier
+from .risk_scorer import RiskScorer

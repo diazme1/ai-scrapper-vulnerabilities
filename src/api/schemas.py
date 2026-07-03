@@ -3,28 +3,26 @@ from pydantic import BaseModel
 
 class Profile(BaseModel):
 
-    email_expuesto: bool
-    phone_expuesto: bool
-    mfa_desactivada: bool
-    password_filtrada: bool
-    github_publico: bool
-    secrets_in_repo: bool
-    api_keys_expuestas: bool
-    software_expirado: bool
-    tls_expirado: bool
-    http_solo: bool
-    dns_mal_configurado: bool
-    docs_publicos: bool
-    ssh_expuesto: bool
-    rdp_expuesto: bool
-    bucket_publico: bool
-    cves: int
-    failed_security_headers: int
+    nombre: str
+    usuarios: list
+    emails: list
+    telefonos: list
+    ubicaciones: list
+    fechas: list
+    roles: list
+    
+class ContextProfile(BaseModel):
+    
+    info_interna_usuario: dict    
+
 
 class RiskResponse(BaseModel):
 
-    risk_level: str
-    risk_score: float
+    nombre_analizado: str
+    roles_identificados: list
+    score_total: int
+    nivel_riesgo: str
+    factores_de_riesgo_detectados: list
 
 class WebScanResponse(BaseModel):
 
