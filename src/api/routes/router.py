@@ -57,3 +57,14 @@ async def escanear_perfiles_html(html_file: UploadFile = File(...)):
         persona["evaluación_riesgo"] = risk_response
 
     return response
+
+@router.post("/escanear-perfiles-url", response_model=WebScanResponse, tags=["Scrapper y Risk Scorer"])
+async def escanear_perfiles_url(url: str):
+
+    response = scrapper.escanear_web(url, True)
+
+    for persona in response.get("personas", []):
+        risk_response = risk_scorer.evaluar_perfil(persona)
+        persona["evaluación_riesgo"] = risk_response
+
+    return response

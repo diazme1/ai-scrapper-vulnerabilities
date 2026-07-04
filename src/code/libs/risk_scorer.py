@@ -55,9 +55,12 @@ class RiskScorer:
 
         if info_interna_usuario:
             for clave, estado in info_interna_usuario.items():
-                if estado is True and clave in self.matriz_scoring:
+                if estado and clave in self.matriz_scoring:
                     score_final += self.matriz_scoring[clave]
                     factores_de_riesgo.append(clave)
+                elif not estado and clave in self.matriz_scoring:
+                    score_final -= self.matriz_scoring[clave]
+                    factores_de_riesgo.append(f"no_{clave}")
 
         return {
             "nombre_analizado": perfil_scraper.get("nombre", "Desconocido"),
