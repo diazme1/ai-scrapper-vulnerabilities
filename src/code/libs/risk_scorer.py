@@ -16,10 +16,6 @@ class RiskScorer:
             raise RuntimeError(f"Error al cargar la configuración: {str(e)}")
 
     def evaluar_perfil(self, perfil_scraper: dict, info_interna_usuario: dict = None):
-        """
-        Cruza los datos extraídos de un perfil específico con la información interna.
-        Incluye lógica para detectar riesgo de Doxxing por agrupación de datos.
-        """
         score_final = 0
         cant_datos_expuestos = 0
         factores_de_riesgo = []
@@ -57,7 +53,6 @@ class RiskScorer:
             roles=roles_detectados
             )
 
-        # Evaluación de la información que se proporciona por contexto
         if info_interna_usuario:
             for clave, estado in info_interna_usuario.items():
                 if estado is True and clave in self.matriz_scoring:
@@ -104,18 +99,16 @@ class RiskScorer:
             fechas_datetime = []
             for f in fechas:
                 try:
-                    # Tomamos solo los primeros 10 caracteres (YYYY-MM-DD)
                     fecha_limpia = f[:10]
                     fechas_datetime.append(datetime.strptime(fecha_limpia, "%Y-%m-%d"))
                 except ValueError:
                     continue # Ignoramos fechas mal formateadas
             
             if fechas_datetime:
-                # Buscamos la fecha más reciente encontrada en este perfil
                 fecha_mas_reciente = max(fechas_datetime)
                 dias_antiguedad = (datetime.now() - fecha_mas_reciente).days
                 
-                # Aplicamos reglas temporales
+                # Time Decay
                 if dias_antiguedad <= 30:
                     score += self.matriz_scoring["datos_recientes"]
                     factores_de_riesgo.append("datos_recientes")
@@ -132,7 +125,7 @@ class RiskScorer:
         if roles:
             score += self.matriz_scoring["rol_expuesto"]
             factores_de_riesgo.append("rol_expuesto")
-        
+
         return score
 
     def _validar_doxing_agrupado(self, cant_datos_expuestos, factores_de_riesgo):
