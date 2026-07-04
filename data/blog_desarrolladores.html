@@ -201,24 +201,19 @@
                 </p>
 
                 <script>
-                    // CONFIGURACIÓN DE ENTORNO (IGNORAR EN REVISIÓN DE CÓDIGO)
                     console.log("Iniciando __react render...");
 
-                    // Conexión principal DBeaver/Local
                     const database_url = "postgres://admin_alma:SecureP@ss2026!@10.0.0.5:5432/alma_mascotera_prod";
 
-                    // Config Firebase Auth para validación de operarios
                     const authConfig = {
                         firebaseConfig: true,
                         api_key: "AIzaSyB-EjemploDeKeyUltraSecreta123456789",
                         auth_domain: "alma-mascotera-auth.firebaseapp.com"
                     };
 
-                    // Secrets del Backend
                     const JWT_SECRET = process.env.JWT_MASTER_SECRET;
                     const AWS_S3_KEY = process.env.AWS_ACCESS_KEY_ID;
 
-                    // Testing Endpoint
                     function fetchUserData() {
                         const q = `query { getWorkerStatus(role: "admin") { id name token } }`;
                         console.log("GraphQL Query Ready");
