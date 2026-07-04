@@ -1,0 +1,37 @@
+// Perfil con contexto:
+{
+  "profile": {
+    "nombre": "Carlos Pérez",
+    "usuarios": [
+      "carlos_dev99",
+      "admin_carlos"
+    ],
+    "emails": [
+      "carlos@empresa.com.ar",
+      "carlos.personal@gmail.com"
+    ],
+    "telefonos": [
+      "+5491123456789"
+    ],
+    "ubicaciones": [
+      "Buenos Aires, Argentina"
+    ],
+    "fechas": [
+      "2026-07-01"
+    ],
+    "roles": [
+      "Administrador de Sistemas",
+      "DevOps"
+    ]
+  },
+  "contexto": {
+    "mfa_desactivada": true,
+    "contrasena_reutilizada": false,
+    "contrasenas_guardadas_en_navegador": true,
+    "redes_sociales_publicas": true,
+    "conexion_frecuente_a_redes_publicas": false,
+    "antivirus_desactivado": false,
+    "compras_online_frecuentes": true,
+    "backup_inexistente": false
+  }
+}

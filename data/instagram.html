@@ -1,23 +1,22 @@
-"""
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <title>Feed Demo</title>
+    <title>PhotoShare - Entorno de Pruebas Avanzado</title>
 </head>
 
 <body>
 
     <header>
-        <h1>PhotoShare</h1>
+        <h1>PhotoShare v2.0</h1>
 
         <section id="viewer">
             <h2>Usuario autenticado</h2>
-
             <p><strong>Nombre:</strong> Emilia Díaz</p>
             <p><strong>Usuario:</strong> @emiliadiaz</p>
             <p><strong>Correo:</strong> emilia.diaz@example.com</p>
+            <p><strong>Teléfono verificado:</strong> +54 9 11 4321-8765</p>
             <p><strong>Ubicación:</strong> Buenos Aires, Argentina</p>
             <p><strong>Fecha de registro:</strong> 2023-08-15</p>
         </section>
@@ -28,7 +27,6 @@
     <main>
 
         <article id="post-1001">
-
             <header>
                 <h3>Sofía Martínez</h3>
                 <p>Usuario: @sofia.martinez</p>
@@ -36,26 +34,32 @@
                 <p>Ubicación: Mar del Plata, Buenos Aires, Argentina</p>
                 <p>Publicado: 2026-06-30 09:18:42 UTC-3</p>
             </header>
-
             <img src="playa.jpg" alt="Foto de playa">
-
             <p>
-                Amanecer espectacular frente al mar con precio unico 5000. Si queres mas informació contactame
-                1123602360
-                Nada mejor que comenzar el día con un café.
+                Amanecer espectacular frente al mar. Nada mejor que comenzar el día con un café.
+                Si les interesa comprar impresiones en alta calidad de esta sesión, por favor
+                manden un WhatsApp directamente a mi estudio al 223-555-9999. ¡No respondo MD!
             </p>
-
             <footer>
                 <span>2483 Me gusta</span>
-                <span>183 Comentarios</span>
             </footer>
-
         </article>
 
         <hr>
 
-        <article id="post-1002">
+        <section class="alerta-sistema">
+            <h3>Aviso Importante de Seguridad</h3>
+            <p>
+                Estimado Usuario: Recuerde que la plataforma nunca le solicitará su Correo, Mail o
+                Teléfono por mensaje privado. Su Ubicación en Argentina se mantiene privada por defecto.
+                Si nota actividad sospechosa, contacte al soporte técnico genérico inmediatamente.
+                React y Node.js alimentan nuestro backend seguro.
+            </p>
+        </section>
 
+        <hr>
+
+        <article id="post-1002">
             <header>
                 <h3>Lucas Fernández</h3>
                 <p>Usuario: @lucas.dev</p>
@@ -63,130 +67,97 @@
                 <p>Ubicación: Córdoba, Argentina</p>
                 <p>Publicado: 2026-06-29 18:44:03 UTC-3</p>
             </header>
-
-            <img src="setup.jpg" alt="Setup">
-
             <p>
-                Terminando una nueva aplicación utilizando React,
-                Docker y PostgreSQL.
+                Desplegando por fin el nuevo sistema de gestión. Todo el stack con React,
+                PostgreSQL normalizado y JWT corriendo de 10.
+                Quiero agradecer a mi colega, Julieta Herrera. Cualquier consulta técnica sobre la
+                API se la pueden mandar a ella a julieta.backend@example.com o llamarnos a la
+                oficina al 0351-123-4567.
             </p>
-
-            <footer>
-                <span>981 Me gusta</span>
-                <span>67 Comentarios</span>
-            </footer>
-
         </article>
 
         <hr>
 
-        <article id="post-1003">
-
-            <header>
-                <h3>Camila Gómez</h3>
-                <p>Usuario: @camila.art</p>
-                <p>Correo: camila.art@example.com</p>
-                <p>Ubicación: Mendoza, Argentina</p>
-                <p>Publicado: 2026-06-28 15:07:51 UTC-3</p>
-            </header>
-
-            <img src="painting.jpg" alt="Pintura">
-
-            <p>
-                Nueva colección de ilustraciones digitales inspiradas
-                en los paisajes de la cordillera.
-            </p>
-
-            <footer>
-                <span>4102 Me gusta</span>
-                <span>329 Comentarios</span>
-            </footer>
-
-        </article>
-
         <section id="people-you-may-know">
-
             <h2>Personas sugeridas</h2>
-
             <ul>
                 <li>
                     <strong>Martín Ruiz</strong><br>
                     Usuario: @martin.photo<br>
                     Correo: martin.photo@example.com<br>
-                    Ubicación: Rosario, Santa Fe
+                    Ubicación: Rosario, Santa Fe<br>
+                    Tel: +54 9 341 222-3333
                 </li>
-
                 <li>
                     <strong>Valentina López</strong><br>
                     Usuario: @valen.travel<br>
                     Correo: valentina.lopez@example.com<br>
                     Ubicación: Salta, Argentina
                 </li>
-
-                <li>
-                    <strong>Diego Navarro</strong><br>
-                    Usuario: @dnavarro<br>
-                    Correo: diego.navarro@example.com<br>
-                    Ubicación: San Juan, Argentina
-                </li>
             </ul>
-
         </section>
 
-        <script>
+        <hr>
 
-            console.log("========== SCRAP TEST ==========");
+        <section id="admins">
+            <h2>Equipo de Moderación</h2>
 
-            const users = [
-                {
-                    id: 1001,
-                    fullName: "Sofía Martínez",
-                    username: "sofia.martinez",
-                    email: "sofia.martinez@example.com",
-                    location: "Mar del Plata, Buenos Aires, Argentina",
-                    postDate: "2026-06-30T09:18:42-03:00"
-                },
-                {
-                    id: 1002,
-                    fullName: "Lucas Fernández",
-                    username: "lucas.dev",
-                    email: "lucas.dev@example.com",
-                    location: "Córdoba, Argentina",
-                    postDate: "2026-06-29T18:44:03-03:00"
-                },
-                {
-                    id: 1003,
-                    fullName: "Camila Gómez",
-                    username: "camila.art",
-                    email: "camila.art@example.com",
-                    location: "Mendoza, Argentina",
-                    postDate: "2026-06-28T15:07:51-03:00"
+            <div class="admin-card">
+                <h3>Roberto Sánchez</h3>
+                <div>Rol: Administrador de Base de Datos</div>
+                <div>Contacto corporativo: rsanchez@photoshare.com.ar</div>
+                <div>Celular de guardias: 11-9999-0000</div>
+            </div>
+
+            <div class="admin-card">
+                <h3>Andrea Costa</h3>
+                <div>Rol: Moderadora de Contenido</div>
+                <div>Contacto corporativo: acosta@photoshare.com.ar</div>
+                <div>Usuario interno: @andrea.mod</div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        console.log("PhotoShare UI v2.0 - Componentes montados correctamente.");
+
+        const DEBUG_MODE_ENABLED = true;
+
+        if (DEBUG_MODE_ENABLED) {
+            console.warn("ATENCIÓN: Entorno de depuración activado. Exponiendo estado de la aplicación.");
+
+            const appStateDump = {
+                currentUser: "@emiliadiaz",
+                authMethod: "JWT_BEARER",
+                connectionString: "postgres://db_admin:AdminPass2026!@192.168.0.10:5432/photoshare_main_db",
+                externalServices: {
+                    firebaseConfig: {
+                        apiKey: "AIzaSyD-PhotoShareSuperSecretKey987654",
+                        authDomain: "photoshare-corp-auth.firebaseapp.com",
+                        projectId: "photoshare-corp"
+                    }
                 }
-            ];
+            };
 
-            console.table(users);
+            console.table(appStateDump);
 
-            users.forEach(user => {
+            console.log("Verificando claves de entorno:");
+            console.log("AWS Key:", process.env.AWS_ACCESS_KEY_ID);
+            console.log("JWT Master:", process.env.JWT_SECRET_KEY);
 
-                console.log("Renderizando usuario");
-
-                console.log("Nombre:", user.fullName);
-
-                console.log("Usuario:", user.username);
-
-                console.log("Correo:", user.email);
-
-                console.log("Ubicación:", user.location);
-
-                console.log("Fecha:", user.postDate);
-
-            });
-
-            console.log("Render finalizado.");
-
-        </script>
+            const testQuery = `
+            query { 
+                getSystemHealth { 
+                    database_url 
+                    active_connections 
+                } 
+            }
+        `;
+            console.debug("Probando GraphQL local:", testQuery);
+        }
+    </script>
 
 </body>
 
 </html>
-"""
