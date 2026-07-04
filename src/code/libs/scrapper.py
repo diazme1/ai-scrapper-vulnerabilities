@@ -151,11 +151,7 @@ class Scrapper:
     # -----Funciones auxiliares--------
 
     def _extraer_datos_por_patron(self, texto:str):
-        """
-        Utilizando expresiones regulares y patrones regex se intentará
-        extraer emails, teléfonos, usuarios y fechas del texto.
-        """
-        # Regex para emails y teléfonos (los que ya tenías)
+        # Regex para emails y teléfonos
         patron_email = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
         emails = re.findall(patron_email, texto)
         
@@ -163,20 +159,19 @@ class Scrapper:
         telefonos = re.findall(patron_telefono, texto)
         telefonos = [tel.strip() for tel in telefonos if len(tel.replace(" ", "").replace("-", "")) >= 8]
         
-        # NUEVO: Regex para nombres de usuario (atrapa @usuario, @nombre.apellido, @dev_99)
+        # Regex para nombres de usuario
         patron_usuario = r'(?<![\w.-])@[\w.]+'
         usuarios = re.findall(patron_usuario, texto)
         
-        # NUEVO: Regex para fechas (atrapa tanto "2023-08-15" como "2026-06-30 09:18:42 UTC-3")
+        # Regex para fechas
         patron_fecha = r'\d{4}-\d{2}-\d{2}(?:\s+\d{2}:\d{2}:\d{2}\s*UTC[-+]\d+)?'
         fechas = re.findall(patron_fecha, texto)
         
         return list(set(emails)), list(set(telefonos)), list(set(usuarios)), list(set(fechas))
 
     def _extraer_entidades_nlp(self, texto:str):
-        """
-        Detecta nombres y lugares en el texto utilizando spaCy.
-        """
+
+        # Usamos spaCy para extraer nombres y ubicaciones
         doc = self.nlp(texto)
         nombres = []
         direcciones_lugares = []
