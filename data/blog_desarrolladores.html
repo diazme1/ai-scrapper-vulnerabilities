@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DevAsk - Comunidad de Desarrollo (Archivo Histórico y Activo)</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f4f4f9;
+            padding: 20px;
+        }
+
+        .thread {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment {
+            background: #fafafa;
+            margin: 15px 0 0 20px;
+            padding: 15px;
+            border-left: 3px solid #ccc;
+        }
+
+        .meta {
+            font-size: 0.85em;
+            color: #555;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .legacy-thread {
+            border-left-color: #999;
+            opacity: 0.9;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+
+        .alert {
+            color: #d9534f;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>DevAsk - Discusiones Técnicas</h1>
+        <p>Subforo: Backend, Infraestructura y Consultas Generales</p>
+    </header>
+
+    <main>
+
+        <article class="thread legacy-thread" id="post-1042">
+            <header>
+                <h2>[RESUELTO] Migración de base de datos legacy en entorno corporativo</h2>
+                <div class="meta">
+                    <p><strong>Autor:</strong> Carlos Mendoza</p>
+                    <p>Usuario: @carlos.sysadmin</p>
+                    <p>Rol: Administrador de Base de Datos</p>
+                    <p>Ubicación: Córdoba Capital, Argentina</p>
+                    <p>Publicado: 2022-02-15 10:30:00 UTC-3</p>
+                </div>
+            </header>
+            <div class="content">
+                <p>
+                    Gente, dejo esto documentado por si a alguien le sirve en el futuro. Logramos migrar
+                    el monolito de PHP a una arquitectura un poco más decente. Si alguien necesita
+                    consultoría sobre cómo armar los scripts de migración, me pueden ubicar en
+                    carlos.consulting@legacydevs.com.ar o llamarme al 0351-444-8888.
+                    Tengan cuidado con los permisos de los usuarios al hacer el dump.
+                </p>
+            </div>
+        </article>
+
+        <article class="thread" id="post-8105">
+            <header>
+                <h2>Duda sobre hosting para clientes freelance (Render vs DonWeb)</h2>
+                <div class="meta">
+                    <p><strong>Autor:</strong> Martín López</p>
+                    <p>Usuario: @martin.freelance</p>
+                    <p>Rol: Diseñador UI/UX</p>
+                    <p>Ubicación: Rosario, Santa Fe</p>
+                    <p>Publicado: 2026-03-10 16:45:00 UTC-3</p>
+                </div>
+            </header>
+            <div class="content">
+                <p>
+                    Buenas tardes. Estoy armando presupuestos en tres opciones (tiering) para un cliente
+                    que vende celulares y parlantes. En la "Opción 2" incluí un carrito básico y
+                    pedidos por WhatsApp.
+                </p>
+                <p>
+                    El dominio ya lo registré en NIC.ar, pero dudo con el hosting. ¿Tienen experiencias
+                    recientes alojando clientes chicos en DonWeb, o me conviene tirar todo a Render
+                    aunque me cobren en dólares? Les dejo mi mail de ventas por si alguno ofrece
+                    servicios de hosting reseller: ventas@martinlopez-dev.com.ar. Mi cel es +54 9 341 555-1122.
+                </p>
+            </div>
+
+            <section class="comment">
+                <header>
+                    <h3>Esteban Rojas</h3>
+                    <div class="meta">
+                        <p>Usuario: @esteban.ops</p>
+                        <p>Rol: Soporte Nivel 2</p>
+                        <p>Publicado: 2026-03-11 09:20:00 UTC-3</p>
+                    </div>
+                </header>
+                <p>
+                    Para una landing page o algo de detailing de autos (hace poco subí algo parecido
+                    con Vercel y volaba), Render en la capa gratuita o Vercel andan bárbaro si es
+                    solo frontend. Si metés backend con base de datos, ojo con DonWeb que a veces
+                    el soporte tarda. Cualquier cosa escribime a esteban.rojas@ops-argentina.com.
+                </p>
+            </section>
+        </article>
+
+        <article class="thread" id="post-8550">
+            <header>
+                <h2>[OFERTA] Búsqueda Junior POO Developer en Fintech</h2>
+                <div class="meta">
+                    <p><strong>Autor:</strong> Julieta Herrera</p>
+                    <p>Usuario: @julieta.rrhh</p>
+                    <p>Rol: Líder de Selección</p>
+                    <p>Ubicación: CABA, Buenos Aires</p>
+                    <p>Publicado: 2026-05-06 09:15:00 UTC-3</p>
+                </div>
+            </header>
+            <div class="content">
+                <p>
+                    En Mercap estamos ampliando el equipo. Buscamos perfiles Junior con conocimientos sólidos
+                    en POO (preferentemente Java, Smalltalk o JavaScript). Es excluyente estar cursando
+                    carreras afines (Licenciatura en Informática o similar).
+                </p>
+                <p>
+                    Mañana, 7 de mayo de 2026, empezamos con las entrevistas cortas iniciales.
+                    Manden su CV actualizado a talento@mercap-fintech.com.ar o un mensajito rápido
+                    al teléfono de la consultora: 11-4321-0000.
+                </p>
+            </div>
+        </article>
+
+        <article class="thread" id="post-8902">
+            <header>
+                <h2>Problema de autenticación separando repositorios (Frontend / Backend)</h2>
+                <div class="meta">
+                    <p><strong>Autor:</strong> Leandro Gutiérrez</p>
+                    <p>Usuario: @lean.dev</p>
+                    <p>Rol: Desarrollador Full Stack</p>
+                    <p>Ubicación: Don Bosco, Buenos Aires, Argentina</p>
+                    <p>Publicado: 2026-07-02 18:20:00 UTC-3</p>
+                </div>
+            </header>
+            <div class="content">
+                <p>
+                    Hola a todos. Estoy trabajando en un sistema de gestión ("Alma Mascotera").
+                    Decidí mantener repositorios separados para el frontend y el backend para
+                    facilitar el despliegue de cada parte.
+                </p>
+                <p>
+                    El frontend lo tengo con React y el backend con Node.js, pero me está tirando
+                    un error de CORS al intentar validar los tokens JWT de los trabajadores. Si algún
+                    Administrador o Líder técnico me puede echar una mano, se lo agradezco.
+                </p>
+                <p>
+                    Cualquier cosa me pueden escribir a leandro.gutierrez@ejemplo.com.ar
+                    o mandar un WhatsApp al +54 9 11 5555-1234.
+                </p>
+            </div>
+
+            <section class="comment">
+                <header>
+                    <h3>Ignacio Silva</h3>
+                    <div class="meta">
+                        <p>Usuario: @nacho.tester</p>
+                        <p>Rol: Tester QA</p>
+                        <p>Ubicación: La Plata, Buenos Aires</p>
+                        <p>Publicado: 2026-07-03 10:05:10 UTC-3</p>
+                    </div>
+                </header>
+                <p>
+                    A mí me pasó algo parecido cuando intentaba conectar el multi-modelo de
+                    persistencia en un repo (estilo Epersgeist con Java y Spring).
+                    Te paso un fragmento de cómo armé mi entorno de pruebas en el servidor de
+                    desarrollo para que compares:
+                </p>
+
+                <script>
+                    // CONFIGURACIÓN DE ENTORNO (IGNORAR EN REVISIÓN DE CÓDIGO)
+                    console.log("Iniciando __react render...");
+
+                    // Conexión principal DBeaver/Local
+                    const database_url = "postgres://admin_alma:SecureP@ss2026!@10.0.0.5:5432/alma_mascotera_prod";
+
+                    // Config Firebase Auth para validación de operarios
+                    const authConfig = {
+                        firebaseConfig: true,
+                        api_key: "AIzaSyB-EjemploDeKeyUltraSecreta123456789",
+                        auth_domain: "alma-mascotera-auth.firebaseapp.com"
+                    };
+
+                    // Secrets del Backend
+                    const JWT_SECRET = process.env.JWT_MASTER_SECRET;
+                    const AWS_S3_KEY = process.env.AWS_ACCESS_KEY_ID;
+
+                    // Testing Endpoint
+                    function fetchUserData() {
+                        const q = `query { getWorkerStatus(role: "admin") { id name token } }`;
+                        console.log("GraphQL Query Ready");
+                    }
+                </script>
+
+                <p>
+                    Avisame si con esa config te levanta bien la normalización de la base de datos.
+                    Si te trabás, llamame al 11-8888-9999.
+                </p>
+            </section>
+        </article>
+
+    </main>
+
+</body>
+
+</html>
